@@ -1,0 +1,2 @@
+# simple_template
+papermc_simple_template
