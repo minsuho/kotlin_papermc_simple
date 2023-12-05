@@ -3,19 +3,23 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     id ("java")
     kotlin("jvm") version "1.9.21"
-    application
+    id("com.github.johnrengelman.shadow") version "8.1.1"
 }
 
 group = property("group")!!
 version = property("version")!!
+api-version = property("api-version")!!
 
 repositories {
     mavenCentral()
     maven("https://repo.papermc.io/repository/maven-public/")
+    maven("https://oss.sonatype.org/content/groups/public/")
 }
 
 dependencies {
-    implementation("io.github.monun:kommand-api:3.1.7")
+    // implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib")
+    implementation("xyz.icetang.lib:kommand-api:3.1.8")
 
     compileOnly("io.papermc.paper:paper-api:1.20.2-R0.1-SNAPSHOT")
 }
@@ -30,28 +34,17 @@ kotlin {
 
 val plugin_main = property("plugin_main")
 tasks {
-    withType<KotlinCompile> {
-        kotlinOptions.jvmTarget = JavaVersion.VERSION_17.toString()
+    withType<JavaCompile>().configureEach {
+        options.release = 17
     }
-
     processResources {
-        filesMatching("plugin.yml") {
+        val props = mapOf("version" to version)
+        inputs.properties(props)
+        filesMatching("*.yml") {
             expand(project.properties)
+            expand(extra.properties)
         }
     }
-
-    create<Jar>("paperJar") {
-        archiveBaseName.set(rootProject.name)
-        archiveClassifier.set("")
-        archiveVersion.set("")
-
-        from(sourceSets["main"].output)
-        doLast {
-            val dir = File("D:\\minecraft\\papermc\\plugins")
-            file("build/libs/${rootProject.name}.jar").copyTo(dir, true)
-        }
-    }
-
     jar{
         archiveBaseName.set(rootProject.name)
         destinationDirectory.set(file("D:\\minecraft\\papermc\\plugins"))
