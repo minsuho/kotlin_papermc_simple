@@ -1,4 +1,4 @@
-#Kotlin PaperMC Simple Template
+# Kotlin PaperMC Simple Template
 
 ## 사용된 라이브러리
 - [Kommand](https://github.com/monun/kommand)
