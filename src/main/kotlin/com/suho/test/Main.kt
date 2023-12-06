@@ -1,4 +1,4 @@
-package com.suho.test
+package com.suho.simple_template
 
 import net.kyori.adventure.text.Component.text
 import org.bukkit.entity.Player
