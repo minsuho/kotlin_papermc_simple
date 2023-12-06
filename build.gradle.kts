@@ -8,7 +8,7 @@ plugins {
 
 group = property("group")!!
 version = property("version")!!
-api-version = property("api-version")!!
+val api_version = property("api_version")!!
 
 repositories {
     mavenCentral()
